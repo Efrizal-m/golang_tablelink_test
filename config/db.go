@@ -2,7 +2,6 @@ package config
 
 import (
 	"fmt"
-	// "github.com/qoharu/movie-app/internal/movie"
 
 	"github.com/jinzhu/gorm"
 )
@@ -24,9 +23,6 @@ func InitDB() {
 
 	//connect to postgres database
 	dbCon, err = gorm.Open("postgres", dbString)
-
-	//migrate database
-	// dbCon.AutoMigrate(&movie.Movie{})
 
 	if err != nil {
 		panic(err)
