@@ -4,11 +4,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func registerUserRoute(r *gin.Engine, movieController user.HTTPController) {
-	movieRouter := r.Group("/v1/users")
-	movieRouter.GET("/", movieController.FindByTitle)
-	movieRouter.GET("/:id", movieController.FindByID)
-	movieRouter.POST("/", movieController.Add)
-	movieRouter.PUT("/:id", movieController.Update)
-	movieRouter.DELETE("/:id", movieController.Delete)
+func registerUserRoute(r *gin.Engine, userController user.HTTPController) {
+	userRouter := r.Group("/v1/users")
+	userRouter.GET("/:id", userController.findAll)
+	userRouter.POST("/", userController.Add)
+	userRouter.PUT("/:name", userController.Update)
+	userRouter.DELETE("/:id", userController.Delete)
 }

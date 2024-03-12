@@ -3,9 +3,10 @@ package server
 import (
 	"tablelink/config"
 
+	"tablelink/internal/user"
+
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
-	// "github.com/qoharu/movie-app/internal/movie"
 )
 
 var db *gorm.DB
@@ -13,15 +14,14 @@ var db *gorm.DB
 func RegisterAPIService(e *gin.Engine) {
 	db = config.GetDBConnection()
 
-	registerMovieAPIService(e)
+	registerUserAPIService(e)
 }
 
-func registerMovieAPIService(r *gin.Engine) {
-	// Initialize Movie Service
-	// movieRepo := movie.NewRepository(db)
-	// movieUseCase := movie.NewUseCase(movieRepo)
-	// movieController := movie.NewHTTPController(movieUseCase)
+func registerUserAPIService(r *gin.Engine) {
+	userRepo := user.NewRepository(db)
+	userUseCase := user.NewUseCase(userRepo)
+	userController := user.NewHTTPController(userUseCase)
 
 	// Start API
-	// registerMovieRoute(r, movieController)
+	registerUserRoute(r, userController)
 }
