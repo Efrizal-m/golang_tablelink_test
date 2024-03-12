@@ -1,24 +1,48 @@
 package user
 
 import (
-	"time"
+	"context"
 )
 
-// Movie ...
-type User struct {
-	ID         int       `json:"id" gorm:"primary_key;AUTO_INCREMENT"`
-	RoleID     string    `json:"role_id"`
-	RoleName   string    `json:"role_name"`
-	Name       int       `json:"name"`
-	Email      int       `json:"email"`
-	Password   int       `json:"password"`
-	LastAccess time.Time `json:"last_access"`
-	CreatedAt  time.Time `json:"created_at"`
-	UpdatedAt  time.Time `json:"updated_at"`
+// UseCase ...
+type UseCase interface {
+	FindAll(context context.Context) ([]User, error)
+	Add(context context.Context, user User) (User, error)
+	Update(context context.Context, editedUser User) (User, error)
+	Delete(context context.Context, id int) error
 }
 
-// FilterSpec ...
-type FilterSpec struct {
-	Name string
-	ID   int
+type useCase struct {
+	repo Repository
+}
+
+// NewUseCase will create new an articleUsecase object representation of domain.ArticleUsecase interface
+func NewUseCase(repo Repository) UseCase {
+	return &useCase{
+		repo: repo,
+	}
+}
+
+// FindByTitle ...
+func (us *useCase) FindAll(context context.Context) (res []User, err error) {
+	res, err = us.repo.GetAll(context)
+	return res, err
+}
+
+// Add ...
+func (us *useCase) Add(context context.Context, newUser User) (res User, err error) {
+	res, err = us.repo.Upsert(context, newUser)
+	return res, err
+}
+
+// Update ...
+func (us *useCase) Update(context context.Context, editedUser User) (res User, err error) {
+	res, err = us.repo.Upsert(context, editedUser)
+	return res, err
+}
+
+// Remove ...
+func (us *useCase) Delete(context context.Context, id int) (err error) {
+	err = us.repo.DeleteByID(context, id)
+	return err
 }

@@ -13,16 +13,16 @@ type Repository interface {
 	DeleteByID(ctx context.Context, id int) error
 }
 
+type repository struct {
+	db *gorm.DB
+}
+
 // NewRepository will implement MovieRepository Interface
 func NewRepository(db *gorm.DB) Repository {
 	return &repository{db}
 }
 
-type repository struct {
-	db *gorm.DB
-}
-
-func (r *repository) GetBySpec(ctx context.Context) (res []User, err error) {
+func (r *repository) GetAll(ctx context.Context) (res []User, err error) {
 	query := r.db
 
 	result := query.Find(&res)
